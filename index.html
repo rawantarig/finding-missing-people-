@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Missing People Platform</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <py-script src="main.py"/>
+    <nav>
+    <header> 
+        <div > 
+            <h1> Missing People Platform</h1>
+        
+        </div> 
+    </header>
+    <section class="miss">
+        <div class="cont">
+           
+        </div>
+            <ul>
+        <li><a href="index.html" class="active">Home </a></li>
+        <li><a href="report.html" >Report</a></li>
+        <li><a href="about.html" >About</a></li>
+        <li><a href="contact.html" >contact</a></li>
+               
+            </ul>
+        </nav>
+        <section class="home">
+            <h2>Welcome To Missing People Platform</h2>
+            <p>Helping Families Find Their Loved Ones</p>
+                </section>
+                
+    <button id="reportButton" > Report a Missing Person</button>
+     <script  defer>
+    document.addEventListener("DOMContentLoaded",function(){
+        console.log("page is loaded");
+        let reportButton=document.querySelector("#reportButton")
+        if(reportButton){
+            reportButton.addEventListener("click",function(){
+window.location.href="report.html";
+            });
+        } else{
+            console.error("reportbutton is not found");
+        }
+    }
+    );
+
+
+     </script>  
+</body>
+</html>
