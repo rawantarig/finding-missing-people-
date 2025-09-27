@@ -1,3 +1,1 @@
-there is a face recognition technique 
-you must install the library first...
-bash pip install face_recognition 
+
