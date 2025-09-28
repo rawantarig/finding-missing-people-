@@ -4,6 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Report Missing Persons</title>
+    <style>
+        #map{
+            height:300px;
+            width:300px;
+            margin-top:10px;
+            border:1px solid #ccc
+        }
+    </style>
     <link rel="stylesheet" href="css/index.css">
     
 
@@ -48,12 +56,13 @@
         <span class="error-message" id="gender-error" ></span>
     <p class="input-container">
     <i class="fas-fa-user"></i>
+    
     <label for="location" class="i"> Last Known Location</label>
-            <input  type="text" list="programming" id="location" name="location" placeholder="click on the map to set location"  required/>
-       <div class="no12" id ="map" ></div>
+            <input  type="text" list="programming" id="location" 
+            name="location" placeholder="select location on map " readonly value="15.5007,32.5599" required/>
+       <div id ="map" ></div>
         </p>
         <span class="error-message" id="location-error" ></span>
-        <div id="map" ></div>
 <p class="input-container">
     <i class="fas-fa-date"></i>
     <label for="date" class="i">Last seen date</label>
@@ -89,21 +98,38 @@
         </p>
       <span class="error-message" id="email-error" ></span>
 
-<button id="submit-btn" onclick="sendemail()">
+<button id="submit-btn" onclick="sendMail(event)">
 Submit
 </button>
         </form>
         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css"> -->
 </section>
 <script >
+
+
+       function initMap() {
+        var initialLocation={lat:15.5007,lng:32.5599};
+        var map = new google.maps.Map(document.getElementById('map'),{
+            zoom:12,
+            center:initialLocation
+        });
+        var marker=new google.maps.Marker({
+            position:initialLocation,
+            map:map,
+            draggable:true,
+            title:'Drag to select location'
+        });
+        google.maps.event.addListener(marker,'dragend',function(){
+            var position=marker.getPosition();
+            document.getElementById('location').value=position.lat().toFixed(6)+","+
+            position.lng().toFixed(6);
+        });
+       }
+    
+
     document.addEventListener("DOMContentLoaded",function(){
         console.log("the button is clicked");
-function initMap(){
-const location ={lat:12.8628, lng:30.2176 
-};
-const map = new google.maps.Map(document.getElementById('map'),{zoom:6,
-center:location});
-}
+
 document.getElementById("submit-btn").addEventListener("click", function(event) {
 event.preventDefault();
 
@@ -199,17 +225,32 @@ photoField.classList.add("input-error");
 isValid = false;
 }
 
-if (isValid) {
-console.log("data is correct,redirecting to about.html")
-window.location.href = "about.html";
-}
+// if (isValid) {
+// console.log("data is correct,redirecting to about.html")
+// window.location.href = "about.html";
+// }
 });
 });
-function sendMail(){
-    window.location.href ="mailto:authority@example.com?subject=newreport&body=this is an email missing people platform"
+function sendMail(event){
+    event.preventDefault();
+    const name =encodeURIComponent(document.getElementById("name").value);
+    const age =encodeURIComponent(document.getElementById("age").value);
+    const gender =encodeURIComponent(document.getElementById("gender").value);
+    const location =encodeURIComponent(document.getElementById("location").value);
+    const date =encodeURIComponent(document.getElementById("date").value);
+    const time =encodeURIComponent(document.getElementById("time").value);
+    const description =encodeURIComponent(document.getElementById("description").value);
+    const contact =encodeURIComponent(document.getElementById("contact").value);
+    const subject =encodeURIComponent("report amissing person");
+    const body = 'Name: ${name}%0D%A'+
+    'Age: ${ge}%0D%A'+'Gender: ${gender}%0D%A'+'Name: ${name}%0D%A'+
+    'Last Known Location: ${location}%0D%A'+'Date: ${date}%0D%A'+'Time: ${time}%0D%A'+
+    'Description: ${description}%0D%A'+'Contact info: ${contact}';
+    window.location.href='mailto:security-agency@example.com?subject=${subject}&body=${body}';
 }
 </script>    
-<script src="https://maps.googleapis.com/maps/api/js?key=AlzaSyCqOEKDCXZ-J4Fmgf7n1hlwVvDFZ3eno&callback=initMap" async defer>
+<script  async defer 
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBlYZjqXokGB-T-jadJrbjSzh5jqidpeQ&callback=initMap">
 </script>
 </body>
 </html>
