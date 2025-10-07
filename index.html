@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة إنقاذ المفقودين</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+    <!-- الصفحة الرئيسية -->
+    <div id="main-page" class="container">
+        <h1 class="main-title">🔍🚨منصة إنقاذ المفقودين</h1>
+        <div class="main-content">
+            <div class="platforms-container">
+                <!-- منصة الشرطة -->
+                <div class="platform-box" onclick="showPlatform('police')">
+                    <div class="platform-title">👮‍♂️الشرطة</div>
+                    <div class="sub-buttons">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); showRegister('police')">إنشاء حساب</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); showLogin('police')">تسجيل دخول</button>
+                    </div>
+                </div>
+
+                <!-- منصة المستخدمين -->
+                <div class="platform-box" onclick="showPlatform('user')">
+                    <div class="platform-title">👥المستخدمين</div>
+                    <div class="sub-buttons">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); showRegister('user')">إنشاء حساب</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); showLogin('user')">تسجيل دخول</button>
+                    </div>
+                </div>
+
+                <!-- منصة المتطوعين -->
+                <div class="platform-box" onclick="showPlatform('volunteer')">
+                    <div class="platform-title">🚻المتطوعين</div>
+                    <div class="sub-buttons">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); showRegister('volunteer')">إنشاء حساب</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); showLogin('volunteer')">تسجيل دخول</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- نماذج التسجيل والدخول -->
+            <div class="platform-section">
+                <!-- نماذج المستخدمين -->
+                <div id="user-register" class="form-container hidden">
+                    <h2>إنشاء حساب مستخدم</h2>
+                    <div class="form-group">
+                        <label for="user-name">الاسم</label>
+                        <input type="text" id="user-name" placeholder="أدخل الاسم">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email">البريد الإلكتروني</label>
+                        <input type="email" id="user-email" placeholder="أدخل البريد الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-phone">رقم الهاتف</label>
+                        <input type="tel" id="user-phone" placeholder="أدخل رقم الهاتف (مثال: 0512345678)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-password">كلمة المرور</label>
+                        <input type="password" id="user-password" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-confirm-password">تأكيد كلمة المرور</label>
+                        <input type="password" id="user-confirm-password" placeholder="أكد كلمة المرور">
+                    </div>
+                    <button class="btn btn-primary" onclick="registerUser()" id="user-register-btn">إنشاء الحساب</button>
+                    <button class="btn back-btn" onclick="showMainPage()">العودة للصفحة الرئيسية</button>
+                </div>
+
+                <div id="user-login" class="form-container hidden">
+                    <h2>تسجيل دخول المستخدم</h2>
+                    <div class="form-group">
+                        <label for="user-login-email">البريد الإلكتروني</label>
+                        <input type="email" id="user-login-email" placeholder="أدخل البريد الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-login-password">كلمة المرور</label>
+                        <input type="password" id="user-login-password" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <button class="btn btn-primary" onclick="loginUser()" id="user-login-btn">تسجيل الدخول</button>
+                    <button class="btn back-btn" onclick="showMainPage()">العودة للصفحة الرئيسية</button>
+                </div>
+
+                <!-- نماذج المتطوعين -->
+                <div id="volunteer-register" class="form-container hidden">
+                    <h2>إنشاء حساب متطوع</h2>
+                    <div class="form-group">
+                        <label for="volunteer-name">الاسم</label>
+                        <input type="text" id="volunteer-name" placeholder="أدخل الاسم">
+                    </div>
+                    <div class="form-group">
+                        <label for="volunteer-email">البريد الإلكتروني</label>
+                        <input type="email" id="volunteer-email" placeholder="أدخل البريد الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label for="volunteer-password">كلمة المرور</label>
+                        <input type="password" id="volunteer-password" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <div class="form-group">
+                        <label for="volunteer-confirm-password">تأكيد كلمة المرور</label>
+                        <input type="password" id="volunteer-confirm-password" placeholder="أكد كلمة المرور">
+                    </div>
+                    <button class="btn btn-primary" onclick="registerVolunteer()" id="volunteer-register-btn">إنشاء الحساب</button>
+                    <button class="btn back-btn" onclick="showMainPage()">العودة للصفحة الرئيسية</button>
+                </div>
+
+                <div id="volunteer-login" class="form-container hidden">
+                    <h2>تسجيل دخول المتطوع</h2>
+                    <div class="form-group">
+                        <label for="volunteer-login-email">البريد الإلكتروني</label>
+                        <input type="email" id="volunteer-login-email" placeholder="أدخل البريد الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label for="volunteer-login-password">كلمة المرور</label>
+                        <input type="password" id="volunteer-login-password" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <button class="btn btn-primary" onclick="loginVolunteer()" id="volunteer-login-btn">تسجيل الدخول</button>
+                    <button class="btn back-btn" onclick="showMainPage()">العودة للصفحة الرئيسية</button>
+                </div>
+
+                <!-- نماذج الشرطة -->
+                <div id="police-register" class="form-container hidden">
+                    <h2>إنشاء حساب شرطة</h2>
+                    <div class="form-group">
+                        <label for="police-name">الاسم</label>
+                        <input type="text" id="police-name" placeholder="أدخل الاسم">
+                    </div>
+                    <div class="form-group">
+                        <label for="police-number">الرقم</label>
+                        <input type="text" id="police-number" placeholder="أدخل الرقم">
+                    </div>
+                    <div class="form-group">
+                        <label for="police-email">البريد الإلكتروني</label>
+                        <input type="email" id="police-email" placeholder="أدخل البريد الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label for="police-password">كلمة المرور</label>
+                        <input type="password" id="police-password" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <div class="form-group">
+                        <label for="police-confirm-password">تأكيد كلمة المرور</label>
+                        <input type="password" id="police-confirm-password" placeholder="أكد كلمة المرور">
+                    </div>
+                    <button class="btn btn-primary" onclick="registerPolice()" id="police-register-btn">إنشاء الحساب</button>
+                    <button class="btn back-btn" onclick="showMainPage()">العودة للصفحة الرئيسية</button>
+                </div>
+
+                <div id="police-login" class="form-container hidden">
+                    <h2>تسجيل دخول الشرطة</h2>
+                    <div class="form-group">
+                        <label for="police-login-email">البريد الإلكتروني</label>
+                        <input type="email" id="police-login-email" placeholder="أدخل البريد الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label for="police-login-password">كلمة المرور</label>
+                        <input type="password" id="police-login-password" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <button class="btn btn-primary" onclick="loginPolice()" id="police-login-btn">تسجيل الدخول</button>
+                    <button class="btn back-btn" onclick="showMainPage()">العودة للصفحة الرئيسية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- لوحة تحكم المستخدم -->
+    <div id="user-dashboard" class="container hidden">
+        <h1 class="main-title">لوحة تحكم المستخدم</h1>
+        <div class="user-info" id="user-welcome"></div>
+
+        
+        <!-- معلومات الاتصال -->
+        <div class="contact-info">
+            <h3>معلومات الاتصال الخاصة بك</h3>
+            <p><strong>رقم الهاتف:</strong> <span id="user-phone-display"></span></p>
+            <p><strong>البريد الإلكتروني:</strong> <span id="user-email-display"></span></p>
+        </div>
+
+        <!-- إشعارات المستخدم -->
+        <div id="user-notifications">
+            <h3 class="header-notification">
+                🔍 الإشعارات
+                <span id="user-notifications-badge" class="notification-badge hidden">0</span>
+            </h3>
+            <div id="user-notifications-list"></div>
+        </div>
+
+        <div class="menu-container">
+            <div class="menu-item" onclick="showUserSection('add-report')">
+                إضافة بلاغ
+            </div>
+            <div class="menu-item" onclick="showUserSection('police-reports')">
+                تقارير الشرطة
+                <span id="police-reports-badge" class="notification-badge hidden">0</span>
+            </div>
+            <div class="menu-item" onclick="showUserSection('my-reports')">
+                بلاغاتي
+                <span id="my-reports-badge" class="notification-badge hidden">0</span>
+            </div>
+        </div>
+
+        <!-- إضافة بلاغ -->
+        <div id="add-report" class="form-container">
+            <h2>إضافة بلاغ</h2>
+            <form id="add-report-form">
+                <div class="form-group">
+                    <label for="missing-name">اسم المفقود</label>
+                    <input type="text" id="missing-name" placeholder="اسم المفقود" required>
+                </div>
+                <div class="form-group">
+                    <label for="missing-age">عمر المفقود</label>
+                    <input type="text" id="missing-age" placeholder="عمر المفقود" required>
+                </div>
+                <div class="form-group">
+                    <label for="missing-type">نوع المفقود</label>
+select id="missing-type" required>
+                        <option value="ذكر">ذكر</option>
+                        <option value="أنثى">أنثى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="last-call">آخر مكالمة مع المفقود</label>
+                    <input type="text" id="last-call" placeholder="آخر مكالمة" required>
+                </div>
+                <div class="form-group">
+                    <label for="last-location">آخر مكان شوهد فيه المفقود</label>
+                    <input type="text" id="last-location" placeholder="آخر مكان" required>
+                </div>
+                <div class="form-group">
+                    <label for="missing-height">طول المفقود</label>
+                    <input type="text" id="missing-height" placeholder="طول المفقود" required>
+                </div>
+                <div class="form-group">
+                    <label for="missing-description">وصف المفقود</label>
+                    <textarea id="missing-description" rows="3" placeholder="وصف المفقود"></textarea>
+                </div>
+
+                <!-- معلومات جهة الاتصال -->
+                <div class="contact-info">
+                    <h4>معلومات جهة الاتصال</h4>
+                    <div class="form-group">
+                        <label for="reporter-phone">رقم هاتفك للتواصل</label>
+                        <input type="tel" id="reporter-phone" placeholder="سيتم تعبئته تلقائياً من بياناتك">
+                    </div>
+                    <div class="form-group">
+                        <label for="additional-contact">رقم إضافي (اختياري)</label>
+                        <input type="tel" id="additional-contact" placeholder="رقم إضافي">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-phone-2">رقم هاتف إضافي للمستخدم (اختياري)</label>
+                        <input type="tel" id="user-phone-2" placeholder="رقم هاتف إضافي">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="missing-photo">صورة المفقود (اختياري)</label>
+                    <input type="file" id="missing-photo" accept="image/*">
+                    <div class="photo-preview-container">
+                        <img id="photo-preview" class="case-image hidden">
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="addUserReport()">إضافة البلاغ</button>
+                <div id="report-success" class="notification notification-success hidden">
+                    تم رفع البلاغ بنجاح
+                </div>
+            </form>
+        </div>
+
+        <!-- تقارير الشرطة -->
+        <div id="police-reports" class="reports-container hidden">
+            <h2>تقارير الشرطة</h2>
+            <div id="police-reports-list"></div>
+        </div>
+
+        <!-- بلاغاتي -->
+        <div id="my-reports" class="reports-container hidden">
+            <h2>بلاغاتي</h2>
+            <div id="my-reports-list"></div>
+        </div>
+
+        <button class="btn back-btn" onclick="showMainPage()">تسجيل الخروج</button>
+    </div>
+<!-- لوحة تحكم الشرطة -->
+<div id="police-dashboard" class="container hidden">
+    <h1 class="main-title">لوحة تحكم الشرطة</h1>
+    <div class="user-info" id="police-welcome"></div>
+    
+    <!-- إشعارات الشرطة -->
+    <div id="police-notifications">
+        <h3 class="header-notification">
+            🔔 الإشعارات
+            <span id="police-notifications-badge" class="notification-badge hidden">0</span>
+        </h3>
+        <div id="police-notifications-list"></div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-item" onclick="showPoliceSection('new-reports')">
+            البلاغات الجديدة
+            <span id="new-reports-badge" class="notification-badge hidden">0</span>
+        </div>
+        <div class="menu-item" onclick="showPoliceSection('in-progress-reports')">
+            البلاغات قيد المتابعة
+            <span id="in-progress-badge" class="notification-badge hidden">0</span>
+        </div>
+        <div class="menu-item" onclick="showPoliceSection('resolved-reports')">
+            البلاغات المحلولة
+            <span id="resolved-badge" class="notification-badge hidden">0</span>
+        </div>
+        <div class="menu-item" onclick="showPoliceSection('volunteer-reports')">
+            تقارير المتطوعين
+            <span id="volunteer-reports-badge" class="notification-badge hidden">0</span>
+        </div>
+    </div>
+
+    <!-- البلاغات الجديدة -->
+    <div id="new-reports" class="reports-container">
+        <h2>البلاغات الجديدة</h2>
+        <div id="new-reports-list"></div>
+    </div>
+
+    <!-- البلاغات قيد المتابعة -->
+    <div id="in-progress-reports" class="reports-container hidden">
+        <h2>البلاغات قيد المتابعة</h2>
+        <div id="in-progress-reports-list"></div>
+    </div>
+
+    <!-- البلاغات المحلولة -->
+    <div id="resolved-reports" class="reports-container hidden">
+        <h2>البلاغات المحلولة</h2>
+        <div id="resolved-reports-list"></div>
+    </div>
+
+    <!-- تقارير المتطوعين -->
+    <div id="volunteer-reports" class="reports-container hidden">
+        <h2>تقارير المتطوعين</h2>
+        <div id="volunteer-reports-list"></div>
+    </div>
+
+    <button class="btn back-btn" onclick="showMainPage()">تسجيل الخروج</button>
+</div>
+<!-- لوحة تحكم المتطوعين -->
+<div id="volunteer-dashboard" class="container hidden">
+    <h1 class="main-title">لوحة تحكم المتطوعين</h1>
+    <div class="user-info" id="volunteer-welcome"></div>
+
+    <div class="menu-container">
+        <div class="menu-item" onclick="showVolunteerSection('all-reports')">
+            جميع البلاغات
+        </div>
+        <div class="menu-item" onclick="showVolunteerSection('select-case')">
+            اختيار حالة للمساعدة
+        </div>
+        <div class="menu-item" onclick="showVolunteerSection('my-volunteer-reports')">
+            تقاريري المقدمة
+        </div>
+    </div>
+
+    <!-- جميع البلاغات -->
+    <div id="all-reports" class="reports-container">
+        <h2>جميع البلاغات المتاحة</h2>
+        <div id="all-reports-list"></div>
+    </div>
+
+    <!-- اختيار حالة -->
+    <div id="select-case" class="form-container hidden">
+        <h2>اختيار حالة للمساعدة</h2>
+        <div class="form-group">
+            <label for="volunteer-case">اختر حالة فقدان</label>
+            <select id="volunteer-case">
+                <option value="">اختر حالة فقدان</option>
+            </select>
+        </div>
+        
+        <div id="case-details" class="hidden">
+            <h3>تفاصيل الحالة</h3>
+            <div id="case-info"></div>
+            
+            <div class="form-group">
+                <label for="volunteer-info">المعلومات التي يمكنك تقديمها</label>
+                <textarea id="volunteer-info" rows="4" placeholder="أدخل أي معلومات قد تساعد في البحث..."></textarea>
+            </div>
+            
+            <button class="btn btn-primary" onclick="submitVolunteerReport()">إرسال التقرير للشرطة</button>
+        </div>
+    </div>
+
+    <!-- تقاريري -->
+    <div id="my-volunteer-reports" class="reports-container hidden">
+        <h2>تقاريري المقدمة للشرطة</h2>
+        <div id="my-volunteer-reports-list"></div>
+    </div>
+
+    <button class="btn back-btn" onclick="showMainPage()">تسجيل الخروج</button>
+</div>
+    <script src="app.js"></script>
+</body>
+</html>
